@@ -1,4 +1,4 @@
-import Link from 'next/link';
+// import Link from 'next/link';
 import '@/styles/globals.css';
 
 export default function RootLayout({
@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <nav className="p-4 bg-gray-100">
+        {/* <nav className="p-4 bg-gray-100">
           <ul className="flex space-x-4">
             <li><Link href="/">Home</Link></li>
             <li><Link href="/chat">Chat</Link></li>
@@ -17,7 +17,9 @@ export default function RootLayout({
             <li><Link href="/signup">Sign Up</Link></li>
             <li><Link href="/settings">Settings</Link></li>
           </ul>
-        </nav>
+        </nav> */}
+
+
         <main>{children}</main>
       </body>
     </html>
