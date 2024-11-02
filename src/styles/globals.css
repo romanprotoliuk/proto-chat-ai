@@ -208,3 +208,223 @@ body {
   max-width: 100%;
   margin: 8px 0;
 }
+
+/* Markdown Content Styling */
+.ai-message {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* Headers */
+.ai-message h1,
+.ai-message h2,
+.ai-message h3,
+.ai-message h4 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ai-message h1 {
+  font-size: 2em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+}
+
+.ai-message h2 {
+  font-size: 1.5em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+}
+
+.ai-message h3 {
+  font-size: 1.25em;
+}
+
+/* Lists */
+.ai-message ul,
+.ai-message ol {
+  padding-left: 2em;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.ai-message ul {
+  list-style-type: disc;
+}
+
+.ai-message ol {
+  list-style-type: decimal;
+}
+
+.ai-message li {
+  margin: 8px 0;
+}
+
+.ai-message li > p {
+  margin-top: 16px;
+}
+
+/* Emphasis */
+.ai-message strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.ai-message em {
+  font-style: italic;
+}
+
+/* Blockquotes */
+.ai-message blockquote {
+  margin: 16px 0;
+  padding: 0 16px;
+  color: #6b7280;
+  border-left: 4px solid #e5e7eb;
+}
+
+.ai-message blockquote > :first-child {
+  margin-top: 0;
+}
+
+.ai-message blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Code */
+.ai-message pre {
+  margin: 16px 0;
+  padding: 16px;
+  overflow: auto;
+  background-color: #1f2937;
+  border-radius: 6px;
+}
+
+.ai-message code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9em;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  background-color: rgba(99, 102, 241, 0.1);
+  border-radius: 3px;
+}
+
+.ai-message pre code {
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  border: 0;
+}
+
+/* Links */
+.ai-message a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.ai-message a:hover {
+  text-decoration: underline;
+}
+
+/* Tables */
+.ai-message table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  margin-top: 0;
+  margin-bottom: 16px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.ai-message table th {
+  font-weight: 600;
+  background-color: #f9fafb;
+}
+
+.ai-message table th,
+.ai-message table td {
+  padding: 6px 13px;
+  border: 1px solid #d1d5db;
+}
+
+.ai-message table tr {
+  background-color: #ffffff;
+  border-top: 1px solid #d1d5db;
+}
+
+.ai-message table tr:nth-child(2n) {
+  background-color: #f9fafb;
+}
+
+/* Horizontal Rule */
+.ai-message hr {
+  height: 1px;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #e5e7eb;
+  border: 0;
+}
+
+/* Paragraphs */
+.ai-message p {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+/* Images */
+.ai-message img {
+  max-width: 100%;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+/* Lists within lists */
+.ai-message ul ul,
+.ai-message ul ol,
+.ai-message ol ol,
+.ai-message ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Spacing fixes */
+.ai-message > :first-child {
+  margin-top: 0;
+}
+
+.ai-message > :last-child {
+  margin-bottom: 0;
+}
+
+/* Custom bullets for nested lists */
+.ai-message ul ul li {
+  list-style-type: circle;
+}
+
+.ai-message ul ul ul li {
+  list-style-type: square;
+}
+
+/* Code block title */
+.ai-message pre {
+  position: relative;
+}
+
+.ai-message pre::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #9ca3af;
+  background-color: #374151;
+  border-bottom-left-radius: 4px;
+}

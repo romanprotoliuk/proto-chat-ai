@@ -70,7 +70,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-0.5 grow">
               <span className="font-semibold text-sm text-neutral-900">
-                Sarah Dole
+                Roman Protoliuk
               </span>
             </div>
             <div className="flex justify-center items-center gap-1 rounded">

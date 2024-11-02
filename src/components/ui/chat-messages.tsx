@@ -2,6 +2,7 @@
 
 import { useChatContext } from '@/context/chat-context';
 import { useEffect, useRef } from 'react';
+import { marked } from 'marked';
 import CodeBlock from '../layout/code-block';
 
 // Helper function to detect and parse code blocks
@@ -73,7 +74,15 @@ export default function ChatMessages() {
                   language={part.language}
                 />
               ) : (
-                <div key={index}>{part.content}</div>
+                <div 
+                  key={index}
+                  dangerouslySetInnerHTML={{ 
+                    __html: marked(part.content, {
+                      breaks: false,
+                      gfm: false
+                    }) 
+                  }} 
+                />
               )
             ))
           )}
