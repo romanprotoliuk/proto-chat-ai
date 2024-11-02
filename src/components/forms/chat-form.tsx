@@ -17,6 +17,7 @@ export default function ChatForm() {
   }, 150);
 
   // Throttled input validation
+  // disable eslint-disable-next-line @typescript-eslint/no-explicit-any
   const throttledInputValidation = useThrottle((value: string) => {
     // Example validation - you can add more complex validation logic
     const isValid = value.length <= 2000; // Max character limit

@@ -8,7 +8,7 @@ export function logPerformance(
   }
   
   // Usage example with our hooks
-  export function withPerformanceLogging<T extends (...args: never[]) => never>(
+  export function withPerformanceLogging<T extends (...args: never[]) => void>(
     fn: T,
     name: string
   ): T {

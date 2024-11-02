@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { APIResponse } from '@/types';
 
 const openai = new OpenAI({
   apiKey: process.env.XAI_API_KEY,
@@ -7,31 +8,36 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: Request) {
-  const { prompt } = await request.json();
-
-  if (!prompt) {
-    return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
-  }
-
   try {
+    const { prompt } = await request.json();
+
+    if (!prompt) {
+      return NextResponse.json(
+        { error: 'Prompt is required' } as APIResponse, 
+        { status: 400 }
+      );
+    }
+
     const completion = await openai.chat.completions.create({
       model: 'grok-beta',
       messages: [
         { 
           role: 'system', 
-          content: 'You are Grok, a chatbot inspired by the Hitchhiker\'s Guide to the Galaxy.' 
+          content: 'You are a helpful assistant.' 
         },
-        { 
-          role: 'user', 
-          content: prompt 
-        }
+        { role: 'user', content: prompt }
       ],
     });
 
-    const message = completion.choices[0].message;
-    return NextResponse.json({ message });
+    return NextResponse.json({
+      message: completion.choices[0].message
+    } as APIResponse);
+    
   } catch (error) {
-    console.error('Error communicating with xAI API:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error('API Error:', error);
+    return NextResponse.json(
+      { error: 'Internal Server Error' } as APIResponse, 
+      { status: 500 }
+    );
   }
 }

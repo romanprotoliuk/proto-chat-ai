@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { withPerformanceLogging } from '@/utils/performance';
 
-export function useDebounce<T extends (...args: never[]) => never>(
+export function useDebounce<T extends (...args: any[]) => any>(
   callback: T,
   delay: number,
   name = 'debounced function'
@@ -9,16 +10,13 @@ export function useDebounce<T extends (...args: never[]) => never>(
 
   const debouncedFn = (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
-    
-    timeoutId = setTimeout(() => {
-      withPerformanceLogging(callback, name)(...args);
-    }, delay);
+    timeoutId = setTimeout(() => withPerformanceLogging(callback, name)(...args), delay);
   };
 
   return debouncedFn;
 }
 
-export function useThrottle<T extends (...args: never[]) => never>(
+export function useThrottle<T extends (...args: any[]) => any>(
   callback: T,
   limit: number,
   name = 'throttled function'
