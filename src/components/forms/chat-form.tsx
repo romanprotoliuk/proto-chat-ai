@@ -1,27 +1,58 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useCallback } from 'react';
 import { useChatContext } from '@/context/chat-context';
+import { useDebounce, useThrottle } from '@/hooks/hooks';
 
 export default function ChatForm() {
   const [message, setMessage] = useState('');
+  const [textareaHeight, setTextareaHeight] = useState('auto');
   const { addMessage, isLoading } = useChatContext();
+
+  // Debounced height adjustment
+  const debouncedHeightAdjustment = useDebounce((element: HTMLTextAreaElement) => {
+    element.style.height = 'auto';
+    element.style.height = `${element.scrollHeight}px`;
+    setTextareaHeight(`${element.scrollHeight}px`);
+  }, 150);
+
+  // Throttled input validation
+  const throttledInputValidation = useThrottle((value: string) => {
+    // Example validation - you can add more complex validation logic
+    const isValid = value.length <= 2000; // Max character limit
+    if (!isValid) {
+      console.warn('Message too long');
+      // You could set an error state here
+    }
+  }, 500);
+
+  const handleInput = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setMessage(value);
+    
+    // Apply debounced height adjustment
+    debouncedHeightAdjustment(e.target);
+    
+    // Apply throttled validation
+    throttledInputValidation(value);
+  }, [debouncedHeightAdjustment, throttledInputValidation]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     if (!message.trim()) return;
     
-    // Add the message to context
     await addMessage(message.trim(), 'user');
     
-    // Clear the input
     setMessage('');
-    
-    // Reset textarea height
-    const textarea = document.querySelector('.chat-input') as HTMLTextAreaElement;
-    if (textarea) {
-      textarea.style.height = 'auto';
+    setTextareaHeight('auto');
+  };
+
+  // Handle Enter key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
     }
   };
 
@@ -33,19 +64,10 @@ export default function ChatForm() {
           placeholder="Type your message..."
           rows={1}
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onInput={(e) => {
-            const target = e.target as HTMLTextAreaElement;
-            target.style.height = 'auto';
-            target.style.height = `${target.scrollHeight}px`;
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSubmit(e);
-            }
-          }}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
           disabled={isLoading}
+          style={{ height: textareaHeight }}
         />
         <button 
           type="submit" 
