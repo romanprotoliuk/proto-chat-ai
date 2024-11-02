@@ -5,15 +5,15 @@ import { useChatContext } from '@/context/chat-context';
 
 export default function ChatForm() {
   const [message, setMessage] = useState('');
-  const { addMessage } = useChatContext();
+  const { addMessage, isLoading } = useChatContext();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     if (!message.trim()) return;
     
     // Add the message to context
-    addMessage(message.trim(), 'user');
+    await addMessage(message.trim(), 'user');
     
     // Clear the input
     setMessage('');
@@ -45,13 +45,14 @@ export default function ChatForm() {
               handleSubmit(e);
             }
           }}
+          disabled={isLoading}
         />
         <button 
           type="submit" 
           className="submit-button"
-          disabled={!message.trim()}
+          disabled={!message.trim() || isLoading}
         >
-          Send
+          {isLoading ? 'Sending...' : 'Send'}
         </button>
       </form>
     </div>
