@@ -1,6 +1,7 @@
 // import Link from 'next/link';
-import '@/styles/globals.css';
-
+import "@/styles/globals.css";
+import Providers from "./providers";
+import { ToastContainer } from "react-toastify";
 export default function RootLayout({
   children,
 }: {
@@ -9,18 +10,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <nav className="p-4 bg-gray-100">
-          <ul className="flex space-x-4">
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/chat">Chat</Link></li>
-            <li><Link href="/signin">Sign In</Link></li>
-            <li><Link href="/signup">Sign Up</Link></li>
-            <li><Link href="/settings">Settings</Link></li>
-          </ul>
-        </nav> */}
-
-
-        <main>{children}</main>
+        <Providers>{children}</Providers>
+        <ToastContainer />
       </body>
     </html>
   );

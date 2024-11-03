@@ -1,7 +1,12 @@
+'use client';
+
 import Image from "next/image";
 import Chat from "@/components/ui/chat";
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Home() {
+  const { data: session } = useSession();
+
   return (
     // main containter
     <div className="global-container">
@@ -62,68 +67,63 @@ export default function Home() {
           </div>
         </div>
 
-        {/* user avatar */}
+        {/* Replace the user avatar section with the auth component */}
         <div className="flex flex-col gap-2 self-stretch pt-4">
-          <div className="flex items-center gap-3 self-stretch p-2 rounded">
-            <div className="w-6 h-6">
-              <img className="w-6 h-6 object-cover"></img>
-            </div>
-            <div className="flex flex-col gap-0.5 grow">
-              <span className="font-semibold text-sm text-neutral-900">
-                Roman Protoliuk
-              </span>
-            </div>
-            <div className="flex justify-center items-center gap-1 rounded">
-              <div className="w-5 h-5">
-                <svg className="w-[15.833333015441895px] h-[16.666667938232422px] text-neutral-700"></svg>
+          {session ? (
+            <div className="flex items-center gap-3 self-stretch p-2 rounded">
+              <div className="w-6 h-6">
+                {session.user?.image && (
+                  <img 
+                    src={session.user.image} 
+                    alt="Profile" 
+                    className="w-6 h-6 object-cover rounded-full"
+                  />
+                )}
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* bottom section for account creation */}
-        <div className="flex flex-col gap-4 self-stretch">
-          <div className="flex items-center gap-1 self-stretch bg-white px-3.5 py-2.5 rounded border-[0.5px] border-solid border-neutral-200">
-            <div className="w-5 h-5">
-              <div className="w-[16.666667938232422px] h-[16.666667938232422px]">
-                <svg className="w-[15.596053123474121px] h-[14.988396644592285px] text-neutral-900"></svg>
-              </div>
-            </div>
-            <div className="flex justify-center items-center px-0.5">
-              <span className="font-medium text-sm text-neutral-900">
-                Start new chat
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-col gap-6 self-stretch bg-white p-4 rounded-lg border border-solid border-neutral-200">
-            <div className="flex flex-col gap-1 self-stretch">
-              <div className="flex items-center self-stretch">
-                <span className="font-medium text-sm text-neutral-900">
-                  Let’s create an account
+              <div className="flex flex-col gap-0.5 grow">
+                <span className="font-semibold text-sm text-neutral-900">
+                  {session.user?.name || session.user?.email}
                 </span>
               </div>
-              <span className="font-normal text-xs text-neutral-600">
-                Save your chat history, share chat, and personalize your
-                experience.
-              </span>
+              <button 
+                onClick={() => signOut()}
+                className="text-sm text-neutral-700 hover:text-neutral-900"
+              >
+                Sign out
+              </button>
             </div>
-            <div className="flex flex-col gap-1 self-stretch">
-              <div className="flex justify-center items-center gap-1 self-stretch bg-indigo-700 px-3 py-2 rounded">
-                <div className="flex justify-center items-center px-0.5">
+          ) : (
+            <div className="flex flex-col gap-6 self-stretch bg-white p-4 rounded-lg border border-solid border-neutral-200">
+              <div className="flex flex-col gap-1 self-stretch">
+                <div className="flex items-center self-stretch">
+                  <span className="font-medium text-sm text-neutral-900">
+                    Let&apos;s create an account
+                  </span>
+                </div>
+                <span className="font-normal text-xs text-neutral-600">
+                  Save your chat history, share chat, and personalize your experience.
+                </span>
+              </div>
+              <div className="flex flex-col gap-1 self-stretch">
+                <button
+                  onClick={() => signIn()}
+                  className="flex justify-center items-center gap-1 self-stretch bg-indigo-700 px-3 py-2 rounded"
+                >
                   <span className="font-medium text-sm text-white">
                     Sign in
                   </span>
-                </div>
-              </div>
-              <div className="flex justify-center items-center gap-1 self-stretch px-3 py-2 rounded">
-                <div className="flex justify-center items-center px-0.5">
+                </button>
+                <button
+                  onClick={() => signIn()}
+                  className="flex justify-center items-center gap-1 self-stretch px-3 py-2 rounded"
+                >
                   <span className="font-medium text-sm text-indigo-700">
                     Create account
                   </span>
-                </div>
+                </button>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

@@ -29,6 +29,9 @@ export async function POST(request: Request) {
       ],
     });
 
+    console.log('Full completion:', completion);
+    console.log('Message content:', completion.choices[0].message);
+
     return NextResponse.json({
       message: completion.choices[0].message
     } as APIResponse);
