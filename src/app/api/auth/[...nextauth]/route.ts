@@ -44,7 +44,7 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      // Make access token available on the client
+      // TODO: Make access token available on the client
       console.log("Session callback", { session, token });
       return session;
     },
