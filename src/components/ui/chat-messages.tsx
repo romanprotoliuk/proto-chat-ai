@@ -4,6 +4,8 @@ import { useChatContext } from '@/context/chat-context';
 import { useEffect, useRef } from 'react';
 import { marked } from 'marked';
 import CodeBlock from '../layout/code-block';
+import PromptGrid from '@/components/layout/prompt-grid';
+import { MessageRole } from '@/types';
 
 // Helper function to detect and parse code blocks
 const parseMessage = (content: string) => {
@@ -43,23 +45,11 @@ const parseMessage = (content: string) => {
 };
 
 export default function ChatMessages() {
-  const { chats, activeChat, isLoading } = useChatContext();
+  const { chats, activeChat, isLoading, addMessage, createNewChat } = useChatContext();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Get the active chat object and its messages
   const currentChat = chats.find(chat => chat.id === activeChat);
   const messages = currentChat?.messages || [];
-
-  console.log('ChatMessages render:', {
-    activeChat,
-    currentChat,
-    messagesCount: messages.length,
-    allChats: chats.map(c => ({
-      id: c.id,
-      title: c.title,
-      messageCount: c.messages.length
-    }))
-  });
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -67,19 +57,27 @@ export default function ChatMessages() {
     }
   }, [messages.length]);
 
-  if (!activeChat || !currentChat) {
-    return (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        <p>Select a chat or create a new one to get started</p>
-      </div>
-    );
-  }
+  const handlePromptSelect = async (promptMessage: string) => {
+    if (!activeChat) {
+      await createNewChat();
+    }
+    await addMessage(promptMessage, 'user' as MessageRole);
+  };
 
-  // If it's a new chat with no messages
-  if (messages.length === 0) {
+  // Show prompts if no active chat or no messages
+  if (!activeChat || !currentChat || messages.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        <p>Start a new conversation</p>
+      <div className="h-full flex flex-col">
+        <div className="flex-1 flex items-center justify-center">
+          {!activeChat || !currentChat ? (
+            <PromptGrid onPromptSelect={handlePromptSelect} />
+          ) : (
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold mb-4">Start a New Chat</h2>
+              <PromptGrid onPromptSelect={handlePromptSelect} />
+            </div>
+          )}
+        </div>
       </div>
     );
   }

@@ -1,5 +1,6 @@
-// Message types
-export type MessageRole = 'user' | 'ai';
+import { LucideIcon } from 'lucide-react';
+
+export type MessageRole = "user" | "ai";
 
 export type Message = {
   id: string;
@@ -20,11 +21,17 @@ export type Chat = {
 export type ChatContextType = {
   chats: Chat[];
   activeChat: string | null;
-  setActiveChat: (chatId: string | null) => void; 
+  setActiveChat: (chatId: string | null) => void;
   createNewChat: () => void;
   deleteChat: (chatId: string) => void;
   addMessage: (content: string, role: MessageRole) => Promise<void>;
   isLoading: boolean;
+};
+
+export type PromptType = {
+  title: string;
+  description: string;
+  promptMessage: string;
 };
 
 // Code block types
