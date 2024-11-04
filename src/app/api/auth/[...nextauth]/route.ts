@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import TwitterProvider from "next-auth/providers/twitter";
+import { signInWithSupabase } from "@/utils/supabase-auth";
+import { supabase } from "@/utils/supabase";
 
 const handler = NextAuth({
   providers: [
@@ -35,17 +37,33 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user }) {
+      if (user?.id) {
+        try {
+          await signInWithSupabase(user.id);
+          return true;
+        } catch (error) {
+          console.error('Supabase auth error:', error);
+          return false;
+        }
+      }
+      return false;
+    },
     async jwt({ token, account }) {
-      // Save the access token and refresh token in the JWT on the initial sign-in
       if (account) {
         token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
       }
       return token;
     },
     async session({ session, token }) {
-      // TODO: Make access token available on the client
-      console.log("Session callback", { session, token });
+      if (session?.user) {
+        session.user.id = token.sub;
+        // Get Supabase session
+        const { data: { session: supabaseSession } } = await supabase.auth.getSession();
+        if (supabaseSession) {
+          session.supabaseAccessToken = supabaseSession.access_token;
+        }
+      }
       return session;
     },
   },

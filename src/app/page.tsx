@@ -3,9 +3,16 @@
 import Image from "next/image";
 import Chat from "@/components/ui/chat";
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: session } = useSession();
+
+  // Replace the simple console.log with this
+  useEffect(() => {
+    console.log('Full Session:', JSON.stringify(session, null, 2));
+    console.log('Auth User ID:', session?.user?.id);
+  }, [session]);
 
   return (
     // main containter
@@ -69,7 +76,7 @@ export default function Home() {
 
         {/* auth component */}
         <div className="flex flex-col gap-2 self-stretch pt-4">
-          {session ? (
+          {session && session.user ? (
             <div className="flex flex-col gap-2 self-stretch">
               {/* User Profile Section */}
               <div className="flex items-center gap-3 self-stretch p-3 rounded-lg bg-white">
