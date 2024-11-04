@@ -14,7 +14,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
   // Update setActiveChat to be a function that we can track
   const handleSetActiveChat = (chatId: string | null) => {
-    console.log('Setting active chat:', chatId);
+    console.log('Setting active chat________________:', chatId);
     setActiveChat(chatId);
   };
 

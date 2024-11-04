@@ -52,7 +52,7 @@ export default function ChatMessages() {
 
   console.log('ChatMessages render:', {
     activeChat,
-    currentChatId: currentChat?.id,
+    currentChat,
     messagesCount: messages.length,
     allChats: chats.map(c => ({
       id: c.id,
