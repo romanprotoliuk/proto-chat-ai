@@ -1,4 +1,4 @@
-# Chat AI with Grok-Beta XAI
+# Chat AI with Grok-Beta XAI [WIP]
 
 <div align="left">
   <h3>A minimal AI chat interface powered by Grok-Beta XAI</h3>
