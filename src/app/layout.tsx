@@ -2,6 +2,8 @@
 import "@/styles/globals.css";
 import Providers from "./providers";
 import { ToastContainer } from "react-toastify";
+import { SupabaseProvider } from "@/context/supabase-context";
+
 export default function RootLayout({
   children,
 }: {
@@ -10,7 +12,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <SupabaseProvider>
+          <Providers>{children}</Providers>
+        </SupabaseProvider>
         <ToastContainer />
       </body>
     </html>
