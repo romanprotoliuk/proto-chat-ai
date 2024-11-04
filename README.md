@@ -1,7 +1,6 @@
 # Chat AI with Grok-Beta XAI
 
 <div align="center">
-  <img src="/public/icons/chat.png" alt="Chat AI Logo" width="120" />
   <h3>A minimal AI chat interface powered by Grok-Beta XAI</h3>
   <p>Built with Next.js 15, TypeScript, and Tailwind CSS</p>
 </div>
@@ -71,8 +70,8 @@ npm run dev
 ```
 
 ## 📸 Preview
+<img width="1209" alt="Screenshot 2024-11-03 at 7 36 34 PM" src="https://github.com/user-attachments/assets/50550bac-5916-4fab-ad06-1d8a14d12cb9">
 
-[Add screenshots/GIF of your application in action]
 
 ## 🤝 Contributing
 
@@ -96,5 +95,5 @@ MIT License - hack and share!
 
 ## 🔗 Links
 
-- GitHub: [your-username](https://github.com/romanprotoliuk)
-- X: [@your-handle](https://twitter.com/romanprotoliuk)
+- GitHub: [romanprotoliuk](https://github.com/romanprotoliuk)
+- X: [@romanprotoliuk](https://twitter.com/romanprotoliuk)
