@@ -7,7 +7,10 @@ import { useDebounce, useThrottle } from '@/hooks/hooks';
 export default function ChatForm() {
   const [message, setMessage] = useState('');
   const [textareaHeight, setTextareaHeight] = useState('auto');
-  const { addMessage, isLoading } = useChatContext();
+  const { addMessage, isLoading, activeChat, chats } = useChatContext();
+
+  // Get current chat to check if it exists and has messages
+  const currentChat = chats.find(chat => chat.id === activeChat);
 
   // Debounced height adjustment
   const debouncedHeightAdjustment = useDebounce((element: HTMLTextAreaElement) => {
@@ -17,13 +20,10 @@ export default function ChatForm() {
   }, 150);
 
   // Throttled input validation
-  // disable eslint-disable-next-line @typescript-eslint/no-explicit-any
   const throttledInputValidation = useThrottle((value: string) => {
-    // Example validation - you can add more complex validation logic
-    const isValid = value.length <= 2000; // Max character limit
+    const isValid = value.length <= 2000;
     if (!isValid) {
       console.warn('Message too long');
-      // You could set an error state here
     }
   }, 500);
 
@@ -31,17 +31,19 @@ export default function ChatForm() {
     const value = e.target.value;
     setMessage(value);
     
-    // Apply debounced height adjustment
     debouncedHeightAdjustment(e.target);
-    
-    // Apply throttled validation
     throttledInputValidation(value);
   }, [debouncedHeightAdjustment, throttledInputValidation]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
-    if (!message.trim()) return;
+    if (!message.trim() || !activeChat || !currentChat) return;
+    
+    console.log('Submitting message for chat:', {
+      chatId: activeChat,
+      messageCount: currentChat.messages.length
+    });
     
     await addMessage(message.trim(), 'user');
     
@@ -49,7 +51,6 @@ export default function ChatForm() {
     setTextareaHeight('auto');
   };
 
-  // Handle Enter key
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -62,18 +63,18 @@ export default function ChatForm() {
       <form className="chat-form" onSubmit={handleSubmit}>
         <textarea 
           className="chat-input"
-          placeholder="Type your message..."
+          placeholder={activeChat ? "Type your message..." : "Select a chat to start messaging"}
           rows={1}
           value={message}
           onChange={handleInput}
           onKeyDown={handleKeyDown}
-          disabled={isLoading}
+          disabled={isLoading || !activeChat}
           style={{ height: textareaHeight }}
         />
         <button 
           type="submit" 
           className="submit-button"
-          disabled={!message.trim() || isLoading}
+          disabled={!message.trim() || isLoading || !activeChat}
         >
           {isLoading ? 'Sending...' : 'Send'}
         </button>

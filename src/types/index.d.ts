@@ -8,9 +8,21 @@ export type Message = {
   timestamp: Date;
 };
 
+// Add Chat type
+export type Chat = {
+  id: string;
+  title: string;
+  messages: Message[];
+  createdAt: string;
+};
+
 // Chat context types
 export type ChatContextType = {
-  messages: Message[];
+  chats: Chat[];
+  activeChat: string | null;
+  setActiveChat: (chatId: string | null) => void; 
+  createNewChat: () => void;
+  deleteChat: (chatId: string) => void;
   addMessage: (content: string, role: MessageRole) => Promise<void>;
   isLoading: boolean;
 };

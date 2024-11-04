@@ -43,16 +43,46 @@ const parseMessage = (content: string) => {
 };
 
 export default function ChatMessages() {
-  const { messages, isLoading } = useChatContext();
+  const { chats, activeChat, isLoading } = useChatContext();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // Get the active chat object and its messages
+  const currentChat = chats.find(chat => chat.id === activeChat);
+  const messages = currentChat?.messages || [];
+
+  console.log('ChatMessages render:', {
+    activeChat,
+    currentChat,
+    messagesCount: messages.length,
+    allChats: chats.map(c => ({
+      id: c.id,
+      title: c.title,
+      messageCount: c.messages.length
+    }))
+  });
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages.length]);
+
+  if (!activeChat || !currentChat) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <p>Select a chat or create a new one to get started</p>
+      </div>
+    );
+  }
+
+  // If it's a new chat with no messages
+  if (messages.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        <p>Start a new conversation</p>
+      </div>
+    );
+  }
 
   return (
     <div className="chat-container">
