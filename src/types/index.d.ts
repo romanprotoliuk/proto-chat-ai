@@ -1,6 +1,6 @@
 import { LucideIcon } from 'lucide-react';
 
-export type MessageRole = "user" | "ai";
+export type MessageRole = "user" | "ai" | "system";
 
 export type Message = {
   id: string;
@@ -18,7 +18,7 @@ export type Chat = {
 };
 
 // Chat context types
-export type ChatContextType = {
+export interface ChatContextType {
   chats: Chat[];
   activeChat: string | null;
   setActiveChat: (chatId: string | null) => void;
@@ -26,7 +26,8 @@ export type ChatContextType = {
   deleteChat: (chatId: string) => void;
   addMessage: (content: string, role: MessageRole) => Promise<void>;
   isLoading: boolean;
-};
+  sessionStatus: 'loading' | 'authenticated' | 'unauthenticated';
+}
 
 // Code block types
 export type CodeBlockProps = {

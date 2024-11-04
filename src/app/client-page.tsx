@@ -27,7 +27,7 @@ export default function ClientPage() {
     isLoading 
   } = useChatContext() as ChatContextType;
 
-  if (status === 'loading' || isLoading) {
+  if (status === 'loading') {
     return <LoadingSkeleton />;
   }
 

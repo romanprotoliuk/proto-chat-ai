@@ -1,69 +1,23 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import { Message, MessageRole, ChatContextType, APIResponse, Chat } from '@/types';
 import { useSession } from 'next-auth/react';
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export function ChatProvider({ children }: { children: ReactNode }) {
-  const { data: session, status } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isMessageLoading, setIsMessageLoading] = useState(false);
 
-  const handleSetActiveChat = (chatId: string | null) => {
+  const handleSetActiveChat = useCallback((chatId: string | null) => {
     console.log('🎯 Activating chat:', chatId);
     setActiveChat(chatId);
-  };
+  }, []);
 
-  // Session change effect
-  useEffect(() => {
-    console.log('👤 Auth status:', status);
-    
-    if (status === 'loading') return;
-
-    if (status === 'unauthenticated') {
-      console.log('🔄 Clearing session data');
-      setChats([]);
-      setActiveChat(null);
-      localStorage.removeItem('chats-anonymous');
-    } else if (status === 'authenticated') {
-      const userKey = `chats-${session.user?.id}`;
-      const savedChats = localStorage.getItem(userKey);
-      
-      if (savedChats) {
-        const parsedChats = JSON.parse(savedChats);
-        console.log('📥 Loading saved chats');
-        setChats(parsedChats);
-        setActiveChat(parsedChats[parsedChats.length - 1]?.id || null);
-      } else {
-        console.log('🆕 Creating initial chat');
-        const initialChat = {
-          id: crypto.randomUUID(),
-          title: 'New Chat',
-          messages: [],
-          createdAt: new Date().toISOString()
-        };
-        setChats([initialChat]);
-        setActiveChat(initialChat.id);
-      }
-    }
-  }, [status, session?.user?.id]);
-
-  // Persistence effect
-  useEffect(() => {
-    const storageKey = session?.user?.id 
-      ? `chats-${session.user.id}` 
-      : 'chats-anonymous';
-    
-    if (chats.length > 0) {
-      console.log('💾 Persisting chats to storage');
-      localStorage.setItem(storageKey, JSON.stringify(chats));
-    }
-  }, [chats, session?.user?.id]);
-
-  const createNewChat = () => {
+  const createNewChat = useCallback(() => {
     const newChat: Chat = {
       id: crypto.randomUUID(),
       title: 'New Chat',
@@ -74,9 +28,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     console.log('➕ Creating new chat:', newChat.id);
     setChats(prev => [...prev, newChat]);
     setActiveChat(newChat.id);
-  };
+  }, []);
 
-  const addMessage = async (content: string, role: MessageRole) => {
+  const addMessage = useCallback(async (content: string, role: MessageRole) => {
     if (!activeChat) {
       console.warn('⚠️ Cannot add message: No active chat');
       return;
@@ -110,7 +64,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     });
 
     if (role === 'user') {
-      setIsLoading(true);
+      setIsMessageLoading(true);
       try {
         console.log('🤖 Requesting AI response');
         const response = await fetch('/api/xai', {
@@ -118,6 +72,10 @@ export function ChatProvider({ children }: { children: ReactNode }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt: content }),
         });
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
 
         const data: APIResponse = await response.json();
 
@@ -142,13 +100,24 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error('❌ API Error:', error);
+        const errorMessage: Message = {
+          id: crypto.randomUUID(),
+          content: 'Sorry, there was an error processing your request.',
+          role: 'system',
+          timestamp: new Date(),
+        };
+        setChats(prev => prev.map(chat => 
+          chat.id === activeChat 
+            ? { ...chat, messages: [...chat.messages, errorMessage] }
+            : chat
+        ));
       } finally {
-        setIsLoading(false);
+        setIsMessageLoading(false);
       }
     }
-  };
+  }, [activeChat]);
 
-  const deleteChat = (chatId: string) => {
+  const deleteChat = useCallback((chatId: string) => {
     console.log('🗑️ Deleting chat:', chatId);
     
     setChats(prev => {
@@ -161,7 +130,53 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       
       return newChats;
     });
-  };
+  }, [activeChat, handleSetActiveChat]);
+
+  // Session change effect
+  useEffect(() => {
+    console.log('👤 Auth status:', sessionStatus);
+    
+    if (sessionStatus === 'loading') return;
+
+    if (sessionStatus === 'unauthenticated') {
+      console.log('🔄 Clearing session data');
+      setChats([]);
+      setActiveChat(null);
+      localStorage.removeItem('chats-anonymous');
+    } else if (sessionStatus === 'authenticated') {
+      const userKey = `chats-${session.user?.id}`;
+      const savedChats = localStorage.getItem(userKey);
+      
+      if (savedChats) {
+        const parsedChats = JSON.parse(savedChats);
+        console.log('📥 Loading saved chats');
+        setChats(parsedChats);
+        setActiveChat(parsedChats[parsedChats.length - 1]?.id || null);
+      } else {
+        console.log('🆕 Creating initial chat');
+        const initialChat = {
+          id: crypto.randomUUID(),
+          title: 'New Chat',
+          messages: [],
+          createdAt: new Date().toISOString()
+        };
+        setChats([initialChat]);
+        setActiveChat(initialChat.id);
+      }
+    }
+  }, [sessionStatus, session?.user?.id]);
+
+  // Persistence effect
+  useEffect(() => {
+    const storageKey = session?.user?.id 
+      ? `chats-${session.user.id}` 
+      : 'chats-anonymous';
+    
+    if (chats.length > 0) {
+      console.log('💾 Persisting chats to storage');
+      localStorage.setItem(storageKey, JSON.stringify(chats));
+    }
+  }, [chats, session?.user?.id]);
 
   return (
     <ChatContext.Provider value={{ 
@@ -171,7 +186,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       createNewChat,
       deleteChat,
       addMessage,
-      isLoading
+      isLoading: isMessageLoading,
+      sessionStatus,
     }}>
       {children}
     </ChatContext.Provider>
