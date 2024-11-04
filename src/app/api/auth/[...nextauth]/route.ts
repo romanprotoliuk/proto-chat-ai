@@ -46,7 +46,10 @@ const handler = NextAuth({
     async session({ session, token }) {
       // TODO: Make access token available on the client
       console.log("Session callback", { session, token });
-      return session;
+      return {
+        ...session,
+        id: token.sub,
+      };
     },
   },
   debug: process.env.NODE_ENV === "development",
