@@ -1,37 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chat AI with Grok-Beta XAI
 
-## Getting Started
+<div align="center">
+  <img src="/public/icons/chat.png" alt="Chat AI Logo" width="120" />
+  <h3>A minimal AI chat interface powered by Grok-Beta XAI</h3>
+  <p>Built with Next.js 15, TypeScript, and Tailwind CSS</p>
+</div>
 
-First, run the development server:
+## 🤖 About
+
+An experimental chat interface that leverages Grok-Beta XAI capabilities. Built with a focus on simplicity, performance, and developer experience. Experimenting with enhancing UX and user personalization across health data for AI chats.
+
+## 🎯 Vision
+
+- 🏥 **Health Data Integration** - Personalized AI interactions based on user health profiles
+- 🔐 **Privacy-First** - Secure handling of sensitive health information
+- 🤝 **User-Centric** - Tailored responses based on individual health contexts
+- 📊 **Data Visualization** - Clear presentation of health insights
+- 🧠 **Contextual Understanding** - AI responses informed by user's health background
+
+## ✨ Core Features
+
+- 🧠 **Grok-Beta Integration** - Experimental AI model with advanced capabilities
+- 🎯 **Minimal Design** - Clean, distraction-free interface
+- 🔒 **X Auth** - Secure authentication with X (Twitter) OAuth 2.0
+- 💾 **Local Storage** - Persistent chat history for authenticated users
+- ⚡ **Real-time Chat** - Instant responses with typing indicators
+- 🎨 **Code Highlighting** - Beautiful syntax highlighting with copy functionality
+- 📝 **Markdown Support** - Rich text formatting in responses
+
+## 🧪 Experimental Features
+
+- **Health Profile Integration**: Testing personalized health data integration
+- **Context-Aware Responses**: Exploring health-conscious AI interactions
+- **Privacy Controls**: Developing granular health data sharing options
+- **Grok Integration**: Testing new AI capabilities
+- **Local Storage**: Experimenting with client-side persistence
+- **Real-time Updates**: Exploring WebSocket integration
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15
+- **Auth**: NextAuth.js with X OAuth 2.0
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript
+- **AI**: Grok-Beta XAI
+
+## 🚀 Getting Started
+
+1. Clone and install:
+
+```bash
+git clone https://github.com/yourusername/chat-ai.git
+cd chat-ai
+npm install
+```
+
+2. Configure environment:
+
+```env
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret
+TWITTER_CLIENT_ID=your-x-client-id
+TWITTER_CLIENT_SECRET=your-x-client-secret
+```
+
+3. Run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📸 Preview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[Add screenshots/GIF of your application in action]
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🤝 Contributing
 
-## Learn More
+Contributions welcome! This is an experimental project - feel free to hack away.
 
-To learn more about Next.js, take a look at the following resources:
+1. Fork it
+2. Create your feature branch (`git checkout -b feature/cool-feature`)
+3. Commit changes (`git commit -am 'Add cool feature'`)
+4. Push (`git push origin feature/cool-feature`)
+5. Open a PR
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MIT License - hack and share!
 
-## Deploy on Vercel
+## 🙏 Credits
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Next.js](https://nextjs.org/)
+- [X Developer Platform](https://developer.twitter.com/)
+- [Grok-Beta](https://grok.x.ai/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# proto-chat-ai
+## 🔗 Links
+
+- GitHub: [your-username](https://github.com/romanprotoliuk)
+- X: [@your-handle](https://twitter.com/romanprotoliuk)
