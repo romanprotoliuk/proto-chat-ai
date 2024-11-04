@@ -1,6 +1,6 @@
 # Chat AI with Grok-Beta XAI
 
-<div align="center">
+<div align="left">
   <h3>A minimal AI chat interface powered by Grok-Beta XAI</h3>
   <p>Built with Next.js 15, TypeScript, and Tailwind CSS</p>
 </div>
