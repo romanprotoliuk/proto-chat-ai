@@ -1,4 +1,4 @@
-import { PromptType } from '@/types';
+import { PromptType } from '@/types/health';
 
 interface PromptCardProps {
   prompt: PromptType;

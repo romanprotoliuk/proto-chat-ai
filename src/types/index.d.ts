@@ -28,12 +28,6 @@ export type ChatContextType = {
   isLoading: boolean;
 };
 
-export type PromptType = {
-  title: string;
-  description: string;
-  promptMessage: string;
-};
-
 // Code block types
 export type CodeBlockProps = {
   code: string;

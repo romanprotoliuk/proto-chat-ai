@@ -1,4 +1,4 @@
-import { PromptType } from '@/types';
+import { PromptType } from '@/types/health';
 
 export const prompts: PromptType[] = [
   {
